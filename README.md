@@ -15,7 +15,6 @@ A full-stack real-time IPL (Indian Premier League) auction management system whe
 - [Database Schema](#database-schema)
 - [Application Routes](#application-routes)
 - [Socket.IO Events](#socketio-events)
-- [Deployment](#deployment)
 
 ---
 
