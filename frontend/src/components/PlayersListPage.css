@@ -1,0 +1,140 @@
+/* Dark-themed stylish container */
+/* Dark-themed stylish container */
+.players-list-container {
+    max-width: 900px;
+    padding: 25px;
+    background: linear-gradient(135deg, #1e272e, #485460);
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    font-family: "Poppins", sans-serif;
+    text-align: center;
+    color: white;
+}
+
+
+/* Title Styling */
+h1 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #ffcc00;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.2);
+}
+
+/* Table Wrapper for Centering */
+.table-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* Table Styling */
+table {
+    width: 80%; /* Reduce width slightly for better alignment */
+    max-width: 700px;
+    border-collapse: collapse;
+    margin: auto; /* Centers the table */
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Table Header */
+thead {
+    background: #ffcc00;
+    color: black;
+    font-size: 16px;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+}
+
+/* Table Rows */
+tbody tr {
+    transition: background 0.3s ease-in-out;
+}
+
+/* Alternate Row Colors */
+tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Hover Effect */
+tbody tr:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* No Data Message */
+.no-data {
+    text-align: center;
+    font-size: 18px;
+    color: #ff5e57;
+    font-weight: bold;
+    padding: 20px;
+}
+
+/* Add Player Button */
+.add-player-btn {
+    margin: auto;
+    display: block;
+    padding: 12px 24px;
+    background: #ffcc00;
+    color: black;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(255, 204, 0, 0.5);
+}
+
+.add-player-btn:hover {
+    background: #ffaa00;
+    transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .players-list-container {
+        max-width: 95%;
+        padding: 20px;
+    }
+
+    .table-wrapper {
+        overflow-x: auto; /* Allow scrolling on small screens */
+    }
+
+    table {
+        font-size: 14px;
+        width: 100%;
+    }
+
+    th, td {
+        padding: 10px;
+    }
+
+    .add-player-btn {
+        font-size: 14px;
+        padding: 10px 20px;
+    }
+}
+
+.page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('/HomePage.jpg') no-repeat center center;
+    background-size: cover; /* Ensure it covers the whole page */
+    height: 70vw;
+    width: 100vw;
+}
+
+.body{
+    display: flex;
+}

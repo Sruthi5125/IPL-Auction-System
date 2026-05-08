@@ -1,0 +1,77 @@
+body {
+    background-image: url('/MainPage1.jpg'); /* Replace with your actual image path */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  .unsold-players-container {
+    max-width: 900px;
+    padding: 25px;
+    background: linear-gradient(135deg, #1e272e, #485460);
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    font-family: "Poppins", sans-serif;
+    text-align: center;
+    color: white;
+  }
+  
+  h1 {
+    color: #f5ecec;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgb(27, 1, 1);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  th, td {
+    padding: 12px;
+    border: 1px solid #0f0101;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #007bff;
+    color: rgb(25, 1, 1);
+  }
+  
+  tbody tr:nth-child(even) {
+    background-color: #080101;
+  }
+  
+  tbody tr:hover {
+    background-color: #03090f;
+  }
+  
+  .no-data {
+    text-align: center;
+    font-style: italic;
+    color: #888;
+  }
+  
+  .back-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .back-btn:hover {
+    background-color: #0056b3;
+  }
+  
