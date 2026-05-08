@@ -76,10 +76,6 @@ The IPL Auction System simulates a live cricket auction experience. An admin con
 ### Database
 - **MySQL** — relational database for teams and players
 
-### Deployment
-- **Frontend** — Vercel (with SPA rewrite config)
-- **Backend** — Render
-- **Database** — Railway (MySQL)
 
 ---
 
@@ -296,27 +292,3 @@ VITE_API_URL=http://localhost:5000
 | `auctionEnded` | Server → All clients | Signals bidding has closed for that player |
 
 ---
-
-## Deployment
-
-### Railway (MySQL Database)
-1. Create a new project on [Railway](https://railway.app)
-2. Add a MySQL service and note the connection credentials
-3. Run the schema SQL using Railway's query console
-
-### Render (Backend)
-1. Connect your GitHub repo on [Render](https://render.com)
-2. Set root directory to `Backend`
-3. Build command: `npm install`
-4. Start command: `node server.js`
-5. Add all backend environment variables using the Railway DB credentials
-6. Set `FRONTEND_URL` to your Vercel deployment URL
-
-### Vercel (Frontend)
-1. Import your GitHub repo on [Vercel](https://vercel.com)
-2. Set root directory to `Frontend`
-3. Framework preset: Vite
-4. Add environment variable `VITE_API_URL` = your Render backend URL
-5. The `vercel.json` in the Frontend folder handles SPA routing automatically
-
-> **Note:** The `Backend/uploads/` folder is ephemeral on Render — uploaded images will be lost on redeploy. For persistent image storage, integrate a service like [Cloudinary](https://cloudinary.com).
