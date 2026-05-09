@@ -109,7 +109,6 @@ IPL PACKAGE/
     │   ├── App.jsx             # Route definitions
     │   └── main.jsx
     ├── .env                    # Frontend env variables (gitignored)
-    ├── vercel.json             # Vercel SPA rewrite rule
     └── package.json
 ```
 
@@ -291,3 +290,4 @@ VITE_API_URL=http://localhost:5000
 | `auctionEnded` | Server → All clients | Signals bidding has closed for that player |
 
 ---
+

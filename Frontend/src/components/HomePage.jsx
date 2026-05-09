@@ -165,7 +165,7 @@ const HomePage = () => {
               </div>
               <h3>{player.name}</h3>
               <p>Base Price: ${player.basePrice}</p>
-              <p className="sold-price-tag">Sold: ${player.sold_price}</p>
+              <p>Purchased Price: ${player.sold_price}</p>
             </div>
           ))
         ) : (

@@ -9,19 +9,22 @@ const MainPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch teams data from API
     axios.get(`${API_URL}/api/teams`)
       .then((response) => {
-        setTeams(response.data); // Store fetched data
+        setTeams(response.data);
       })
       .catch((error) => {
         console.error("Error fetching teams:", error);
       });
   }, []);
 
+  const handleLogout = () => {
+    navigate("/");
+  };
+
   return (
     <div className="main-container">
-      <button className="main-logout-btn" onClick={() => navigate("/")}>Logout</button>
+      <button className="main-logout-btn" onClick={handleLogout}>Logout</button>
 
       <h1>IPL AUCTION</h1>
       {/* Navbar */}

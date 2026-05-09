@@ -170,7 +170,7 @@ const upload = multer({
 router.post("/players/add", upload.single("image"), (req, res) => {
   try {
     const { name, country, category, basePrice, age, overseas, battingStyle, bowlingStyle, fifties, hundreds, totalRuns, wicketsTaken, economy, strikeRate, matchesPlayed } = req.body;
-    const imageUrl = req.file ? req.file.originalname : null;
+    const imageUrl = req.file ? req.file.filename : null;
     const overseasValue = overseas === "true" || overseas === "Yes" ? "Yes" : "No";
     const sql = `INSERT INTO players (name, country, category, basePrice, age, overseas, batting_style, bowling_style, fifty, hundred, total_runs, wickets_taken, economy, strike_rate, matches_played, image_url) 
                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;

@@ -14,7 +14,19 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + '-' + file.originalname);
   },
 });
-const upload = multer({ storage });
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    const allowedMimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    if (allowedMimes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only image files are allowed'));
+    }
+  }
+});
 
 router.post("/admin-login", (req, res) => {
   const { username, password } = req.body;
@@ -30,46 +42,53 @@ router.post("/admin-login", (req, res) => {
   return res.status(401).json({ error: "Invalid admin credentials" });
 });
 
-router.post("/register", upload.single("image"), (req, res) => {
+router.post("/register", upload.single("teamImage"), (req, res) => {
   const { teamName, username, password, budget, coach, captain, owner } = req.body;
-  const imageUrl = req.file ? req.file.filename : null;
 
   if (!teamName || !username || !password || !budget) {
     return res.status(400).json({ error: "Team name, username, password, and budget are required" });
   }
 
-  db.query("SELECT id, username FROM teams WHERE name = ?", [teamName], (err, results) => {
-    if (err) return res.status(500).json({ error: "Database error" });
+  const imageUrl = req.file ? req.file.filename : null;
 
-    if (results.length > 0) {
-      if (results[0].username) {
-        return res.status(400).json({ error: "Team already registered. Please login instead." });
+  db.query("SELECT id, name, username FROM teams WHERE name = ?", [teamName], (err, results) => {
+    if (err) return res.status(500).json({ error: "Database error" });
+    if (results.length === 0) return res.status(404).json({ error: "Team not found. Check the team name and try again." });
+    if (results[0].username) return res.status(400).json({ error: "Team already registered. Please login instead." });
+
+    const teamId = results[0].id;
+
+    db.query("SELECT id FROM teams WHERE username = ? AND id != ?", [username, teamId], (err2, usernameCheck) => {
+      if (err2) return res.status(500).json({ error: "Database error" });
+      if (usernameCheck.length > 0) return res.status(400).json({ error: "Username already taken. Choose a different username." });
+
+      const updateValues = [
+        username,
+        password,
+        Number(budget),
+        coach || null,
+        captain || null,
+        owner || null,
+      ];
+
+      let sql = "UPDATE teams SET username = ?, password = ?, budget = ?, coach = ?, captain = ?, owner = ?";
+
+      if (imageUrl) {
+        sql += ", image_url = ?";
+        updateValues.push(imageUrl);
       }
-      // Team exists but has no credentials yet — update all fields
-      const teamId = results[0].id;
-      const imageClause = imageUrl ? ", image_url = ?" : "";
-      const params = imageUrl
-        ? [username, password, Number(budget), coach || null, captain || null, owner || null, imageUrl, teamId]
-        : [username, password, Number(budget), coach || null, captain || null, owner || null, teamId];
-      db.query(
-        `UPDATE teams SET username = ?, password = ?, budget = ?, coach = ?, captain = ?, owner = ?${imageClause} WHERE id = ?`,
-        params,
-        (err2) => {
-          if (err2) return res.status(500).json({ error: "Registration failed" });
-          res.json({ message: "Registration successful", team: { id: teamId, name: teamName, budget: Number(budget) } });
-        }
-      );
-    } else {
-      // New team — insert a fresh record
-      db.query(
-        "INSERT INTO teams (name, username, password, budget, coach, captain, owner, image_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-        [teamName, username, password, Number(budget), coach || null, captain || null, owner || null, imageUrl],
-        (err2, result) => {
-          if (err2) return res.status(500).json({ error: "Registration failed" });
-          res.json({ message: "Registration successful", team: { id: result.insertId, name: teamName, budget: Number(budget) } });
-        }
-      );
-    }
+
+      sql += " WHERE id = ?";
+      updateValues.push(teamId);
+
+      db.query(sql, updateValues, (err3) => {
+        if (err3) return res.status(500).json({ error: "Registration failed" });
+        res.json({
+          message: "Registration successful",
+          team: { id: teamId, name: teamName, budget: Number(budget) }
+        });
+      });
+    });
   });
 });
 
@@ -86,10 +105,9 @@ router.post("/login", (req, res) => {
     if (results.length === 0) return res.status(401).json({ error: "Invalid credentials" });
 
     const team = results[0];
-    res.json({ message: "Login successful", team: { id: team.id, name: team.name, budget:team.budget} });
+    res.json({ message: "Login successful", team: { id: team.id, name: team.name, budget: team.budget } });
   });
 });
-
 
 router.get("/teams/available", (req, res) => {
   db.query("SELECT id, name FROM teams WHERE username IS NULL", (err, results) => {

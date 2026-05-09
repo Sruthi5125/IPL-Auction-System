@@ -162,13 +162,6 @@
   cursor: pointer;
 }
 
-.sold-price-tag {
-  color: #2ecc71;
-  font-weight: bold;
-  font-size: 13px;
-  margin: 2px 0;
-}
-
 .bid-button, .logout-button {
   padding: 10px 20px;
   background: #28a745;

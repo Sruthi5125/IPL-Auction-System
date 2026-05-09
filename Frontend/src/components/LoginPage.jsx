@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./LoginPage.css";
 import { API_URL } from "../config";
 
 const LoginPage = () => {
-  const [role, setRole] = useState("team"); // "admin" | "team"
-  const [mode, setMode] = useState("login"); // "login" | "register"
+  const [role, setRole] = useState("team");
+  const [mode, setMode] = useState("login");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [teamName, setTeamName] = useState("");
+  const [registerUsername, setRegisterUsername] = useState("");
   const [budget, setBudget] = useState("");
   const [coach, setCoach] = useState("");
   const [captain, setCaptain] = useState("");
@@ -21,6 +22,7 @@ const LoginPage = () => {
     setUsername("");
     setPassword("");
     setTeamName("");
+    setRegisterUsername("");
     setBudget("");
     setCoach("");
     setCaptain("");
@@ -84,20 +86,20 @@ const LoginPage = () => {
   const handleTeamRegister = async (e) => {
     e.preventDefault();
     setError("");
-    if (!teamName || !username || !password || !budget) {
+    if (!teamName || !registerUsername || !password || !budget) {
       setError("Team name, username, password, and budget are required");
       return;
     }
     try {
       const formData = new FormData();
       formData.append("teamName", teamName);
-      formData.append("username", username);
+      formData.append("username", registerUsername);
       formData.append("password", password);
       formData.append("budget", budget);
-      formData.append("coach", coach);
-      formData.append("captain", captain);
-      formData.append("owner", owner);
-      if (teamImage) formData.append("image", teamImage);
+      if (coach) formData.append("coach", coach);
+      if (captain) formData.append("captain", captain);
+      if (owner) formData.append("owner", owner);
+      if (teamImage) formData.append("teamImage", teamImage);
 
       const res = await fetch(`${API_URL}/api/register`, {
         method: "POST",
@@ -117,7 +119,7 @@ const LoginPage = () => {
 
   return (
     <div className="login-container">
-      <div className="login-box">
+      <div className={`login-box ${mode === "register" ? "login-box--register" : ""}`}>
         <h2 className="login-title">IPL Auction</h2>
 
         <div className="role-selector">
@@ -192,9 +194,9 @@ const LoginPage = () => {
                 </p>
               </form>
             ) : (
-              <form onSubmit={handleTeamRegister}>
+              <form onSubmit={handleTeamRegister} encType="multipart/form-data">
                 <div className="input-group">
-                  <label>Team Name *</label>
+                  <label>Team Name <span className="required">*</span></label>
                   <input
                     type="text"
                     placeholder="e.g. Chennai Super Kings"
@@ -204,17 +206,17 @@ const LoginPage = () => {
                   />
                 </div>
                 <div className="input-group">
-                  <label>Username *</label>
+                  <label>Username <span className="required">*</span></label>
                   <input
                     type="text"
-                    placeholder="Choose a login username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="e.g. csk"
+                    value={registerUsername}
+                    onChange={(e) => setRegisterUsername(e.target.value)}
                     className="input-field"
                   />
                 </div>
                 <div className="input-group">
-                  <label>Password *</label>
+                  <label>Password <span className="required">*</span></label>
                   <input
                     type="password"
                     value={password}
@@ -223,7 +225,7 @@ const LoginPage = () => {
                   />
                 </div>
                 <div className="input-group">
-                  <label>Budget ($) *</label>
+                  <label>Budget ($) <span className="required">*</span></label>
                   <input
                     type="number"
                     min="1"
@@ -237,7 +239,7 @@ const LoginPage = () => {
                   <label>Coach</label>
                   <input
                     type="text"
-                    placeholder="e.g. Ricky Ponting"
+                    placeholder="e.g. Stephen Fleming"
                     value={coach}
                     onChange={(e) => setCoach(e.target.value)}
                     className="input-field"
@@ -257,7 +259,7 @@ const LoginPage = () => {
                   <label>Owner</label>
                   <input
                     type="text"
-                    placeholder="e.g. N. Srinivasan"
+                    placeholder="e.g. India Cements"
                     value={owner}
                     onChange={(e) => setOwner(e.target.value)}
                     className="input-field"
